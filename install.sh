@@ -174,133 +174,30 @@ function is_macos1014()
     fi
 }
 
-# 在alpine上直装vim8.2
-# function compile_vim_on_alpine()
-# {
-#     apk --upgrade add vim
-#     cd -
-# }
-
-# 在ubuntu上源代码安装vim
-function compile_vim_on_ubuntu()
-{
-    sudo apt-get install -y libncurses5-dev libncurses5 libgnome2-dev libgnomeui-dev \
-        libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
-        libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev python3-dev ruby-dev lua5.1 lua5.1-dev
-
-    rm -rf ~/vim82
-    git clone https://gitee.com/chxuan/vim82.git ~/vim82
-    cd ~/vim82
-    ./configure --with-features=huge \
-        --enable-multibyte \
-        --enable-rubyinterp \
-        --enable-pythoninterp \
-        --enable-perlinterp \
-        --enable-luainterp \
-        --enable-gui=gtk2 \
-        --enable-cscope \
-        --prefix=/usr
-    make
-    sudo make install
-    cd -
-}
-
-# 在debian上源代码安装vim
-function compile_vim_on_debian()
-{
-    sudo apt-get install -y libncurses5-dev libncurses5 libgtk2.0-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev python3-dev ruby-dev lua5.1 lua5.1-dev
-
-    rm -rf ~/vim82
-    git clone https://gitee.com/chxuan/vim82.git ~/vim82
-    cd ~/vim82
-    ./configure --with-features=huge \
-        --enable-multibyte \
-        --enable-rubyinterp \
-        --enable-pythoninterp \
-        --enable-perlinterp \
-        --enable-luainterp \
-        --enable-gui=gtk2 \
-        --enable-cscope \
-        --prefix=/usr
-    make
-    sudo make install
-    cd -
-}
-
-# 在parrot上源代码安装vim
-function compile_vim_on_parrot()
-{
-    sudo apt-get install -y libncurses5-dev libncurses5 libgtk2.0-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev python3-dev ruby-dev lua5.1 vim
-
-    rm -rf ~/vim82
-    git clone https://gitee.com/chxuan/vim82.git ~/vim82
-    cd ~/vim82
-    ./configure --with-features=huge \
-        --enable-multibyte \
-        --enable-rubyinterp \
-        --enable-pythoninterp \
-        --enable-perlinterp \
-        --enable-luainterp \
-        --enable-gui=gtk2 \
-        --enable-cscope \
-        --prefix=/usr
-    make
-    sudo make install
-    cd -
-}
-
-# 在centos上源代码安装vim
-function compile_vim_on_centos()
-{
-    sudo yum install -y ruby ruby-devel lua lua-devel luajit \
-        luajit-devel ctags git python python-devel \
-        python34 python34-devel tcl-devel \
-        perl perl-devel perl-ExtUtils-ParseXS \
-        perl-ExtUtils-XSpp perl-ExtUtils-CBuilder \
-        perl-ExtUtils-Embed libX11-devel ncurses-devel
-    
-    rm -rf ~/vim82
-    git clone https://gitee.com/chxuan/vim82.git ~/vim82
-    cd ~/vim82
-    ./configure --with-features=huge \
-        --enable-multibyte \
-        --with-tlib=tinfo \
-        --enable-rubyinterp=yes \
-        --enable-pythoninterp=yes \
-        --enable-perlinterp=yes \
-        --enable-luainterp=yes \
-        --enable-gui=gtk2 \
-        --enable-cscope \
-        --prefix=/usr
-    make
-    sudo make install
-    cd -
-}
-
 # 安装mac平台必备软件
 function install_prepare_software_on_mac()
 {
     xcode-select --install
 
-    brew install vim gcc cmake ctags-exuberant ack
+    brew install vim gcc cmake ctags-exuberant ack clang
 
     macos1014=$(is_macos1014)
     if [ $macos1014 == 1 ]; then
-        open /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg
+        open /Library/Developer/CommandLineTools/Pages/macOS_SDK_headers_for_macOS_10.14.pkg
     fi
 }
 
 # 安装FreeBSD必备软件
 function install_prepare_software_on_freebsd()
 {
-    sudo pkg install -y vim ctags automake gcc cmake p5-ack python git fontconfig
+    sudo pkg install -y vim ctags automake gcc cmake p5-ack python git fontconfig clang
 }
 
 # 安装android平台必备软件
 function install_prepare_software_on_android()
 {
     pkg update
-    pkg install -y git vim-python cmake python2 python ctags ack-grep ncurses-utils
+    pkg install -y git vim-python cmake python2 python ctags ack-grep ncurses-utils clang
 }
 
 # 安装alpine必备软件 需要更换源
@@ -312,7 +209,7 @@ function install_prepare_software_on_alpine()
 
     apk update
 
-    apk add python3 python3-dev ruby ruby-dev lua lua-dev luajit luajit-dev ctags tcl tcl-dev perl perl-dev libx11 libx11-dev ncurses ncurses-dev g++ gcc make automake cmake fontconfig fontconfig-dev nerd-fonts gcompat clang clang-dev vim
+    apk add python3 clang python3-dev ruby ruby-dev lua lua-dev luajit luajit-dev ctags tcl tcl-dev perl perl-dev libx11 libx11-dev ncurses ncurses-dev g++ gcc make automake cmake fontconfig fontconfig-dev nerd-fonts gcompat clang clang-dev vim
 }
 
 # 安装ubuntu必备软件
@@ -327,7 +224,7 @@ function install_prepare_software_on_ubuntu()
         sudo apt-get install -y cmake
     fi
 
-    sudo apt-get install -y build-essential python python-dev python3-dev fontconfig libfile-next-perl ack-grep git
+    sudo apt-get install -y build-essential python python-dev python3-dev fontconfig libfile-next-perl ack-grep git clang
     sudo apt-get install -y universal-ctags || sudo apt-get install -y exuberant-ctags
     
     if [ $version -ge 18 ];then
@@ -341,7 +238,7 @@ function install_prepare_software_on_ubuntu()
 function install_prepare_software_on_ubuntu_like()
 {
     sudo apt-get update
-    sudo apt-get install -y cmake build-essential python python-dev python3-dev fontconfig libfile-next-perl ack-grep git
+    sudo apt-get install -y cmake build-essential python python-dev python3-dev fontconfig libfile-next-perl ack-grep git clang
     sudo apt-get install -y universal-ctags || sudo apt-get install -y exuberant-ctags
     compile_vim_on_ubuntu
 }
@@ -350,7 +247,7 @@ function install_prepare_software_on_ubuntu_like()
 function install_prepare_software_on_debian()
 {
     sudo apt-get update
-    sudo apt-get install -y cmake build-essential python python-dev python3-dev fontconfig libfile-next-perl ack git
+    sudo apt-get install -y cmake build-essential python python-dev python3-dev fontconfig libfile-next-perl ack git clang
     sudo apt-get install -y universal-ctags || sudo apt-get install -y exuberant-ctags
     compile_vim_on_debian
 }
@@ -359,7 +256,7 @@ function install_prepare_software_on_debian()
 function install_prepare_software_on_parrot()
 {
     sudo apt-get update
-    sudo apt-get install -y cmake exuberant-ctags build-essential python python-dev python3-dev fontconfig libfile-next-perl ack git
+    sudo apt-get install -y cmake exuberant-ctags build-essential python python-dev python3-dev fontconfig libfile-next-perl ack git clang
     compile_vim_on_parrot
 }
 
@@ -369,9 +266,9 @@ function install_prepare_software_on_centos()
     version=$(get_centos_version)
     if [ $version -ge 8 ];then
         sudo dnf install -y epel-release
-        sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel make cmake python2 python2-devel python3-devel fontconfig ack git
+        sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel make cmake python2 python2-devel python3-devel fontconfig ack git clang
     else
-        sudo yum install -y ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel fontconfig ack git
+        sudo yum install -y ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel fontconfig ack git clang
         compile_vim_on_centos
     fi
 }
@@ -379,13 +276,13 @@ function install_prepare_software_on_centos()
 # 安装fedora必备软件
 function install_prepare_software_on_fedora()
 {
-    sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel fontconfig ack git
+    sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel fontconfig ack git clang
 }
 
 # 安装archlinux必备软件
 function install_prepare_software_on_archlinux()
 {
-    sudo pacman -S --noconfirm vim ctags automake gcc cmake python3 python2 ack git fontconfig
+    sudo pacman -S --noconfirm vim ctags automake gcc cmake python3 python2 ack git fontconfig clang
     sudo ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
 }
 
@@ -420,7 +317,7 @@ function install_software_on_gentoo()
 # 安装opensuse必备软件
 function install_prepare_software_on_opensuse()
 {
-    sudo zypper install -y vim ctags gcc gcc-c++ cmake python-devel python3-devel ack fontconfig git ncurses5-devel
+    sudo zypper install -y vim ctags gcc gcc-c++ cmake python-devel python3-devel ack fontconfig git ncurses5-devel clang
 }
 
 # 拷贝文件
@@ -434,9 +331,6 @@ function copy_files()
 
     rm -rf ~/.vimrc.custom.config
     cp ${PWD}/.vimrc.custom.config ~
-
-    rm -rf ~/.ycm_extra_conf.py
-    ln -s ${PWD}/.ycm_extra_conf.py ~
 
     mkdir ~/.vim
     rm -rf ~/.vim/colors
@@ -484,74 +378,6 @@ function install_vim_plugin()
     vim -c "PlugInstall" -c "q" -c "q"
 }
 
-# 安装ycm插件
-function install_ycm()
-{
-    git clone https://gitee.com/chxuan/YouCompleteMe-clang.git ~/.vim/plugged/YouCompleteMe
-
-    cd ~/.vim/plugged/YouCompleteMe
-    distro=`get_linux_distro`
-    read -p "Please choose to compile ycm with python2 or python3, if there is a problem with the current selection, please choose another one. [2/3] " version
-    if [[ $version == "2" ]]; then
-        echo "Compile ycm with python2."
-        # alpine 忽略 --clang-completer 并将 let g:ycm_clangd_binary_path 注入 .vimrc
-        {
-            if [ ${distro} == "Alpine" ]; then
-                echo "##########################################"
-                echo "Apline Build, need without GLIBC."
-                echo "##########################################"
-                sed -i "273ilet g:ycm_clangd_binary_path='/usr/bin/clang'" ~/.vimrc
-                python2.7 ./install.py
-                return
-            fi
-        } || {
-            python2.7 ./install.py --clang-completer
-        } || {
-            echo "##########################################"
-            echo "Build error, trying rebuild without Clang."
-            echo "##########################################"
-            python2.7 ./install.py
-        }
-    else
-        echo "Compile ycm with python3."
-        {
-            # alpine 跳过该步骤
-            if [ ${distro} == "Alpine" ]; then
-                echo "##########################################"
-                echo "Apline Build, need without GLIBC."
-                echo "##########################################"
-                sed -i "273ilet g:ycm_clangd_binary_path='/usr/bin/clang'" ~/.vimrc
-                python3 ./install.py
-                return
-            fi
-        } || {
-            python3 ./install.py --clang-completer
-        } || {
-            echo "##########################################"
-            echo "Build error, trying rebuild without Clang."
-            echo "##########################################"
-            python3 ./install.py
-        }
-    fi
-}
-
-# 在android上安装ycm插件
-function install_ycm_on_android()
-{
-    git clone https://gitee.com/chxuan/YouCompleteMe-clang.git ~/.vim/plugged/YouCompleteMe
-
-    cd ~/.vim/plugged/YouCompleteMe
-
-    read -p "Please choose to compile ycm with python2 or python3, if there is a problem with the current selection, please choose another one. [2/3] " version
-    if [[ $version == "2" ]]; then
-        echo "Compile ycm with python2."
-        python2.7 ./install.py --clang-completer --system-libclang
-    else
-        echo "Compile ycm with python3."
-        python3 ./install.py --clang-completer --system-libclang
-    fi
-}
-
 # 打印logo
 function print_logo()
 {
@@ -579,7 +405,6 @@ function install_vimplus_on_mac()
     install_prepare_software_on_mac
     copy_files
     install_fonts_on_mac
-    install_ycm
     install_vim_plugin
     print_logo
 }
@@ -599,7 +424,6 @@ function install_vimplus_on_android()
     install_prepare_software_on_android
     copy_files
     install_fonts_on_android
-    install_ycm_on_android
     install_vim_plugin
     print_logo
 }
@@ -609,7 +433,6 @@ function begin_install_vimplus()
 {
     copy_files
     install_fonts_on_linux
-    install_ycm
     install_vim_plugin
     print_logo
 }
@@ -692,9 +515,6 @@ function install_vimplus_on_alpine()
     backup_vimrc_and_vim
     install_prepare_software_on_alpine
     begin_install_vimplus
-
-    # 单独安装 ycm
-
 }
 
 # 在linux平上台安装vimplus
@@ -754,7 +574,8 @@ function main()
 
     type=$(uname)
     echo "Platform type: "${type}
-
+    curl -sL install-node.now.sh/lts | bash # coc.nvim需要
+    
     if [ ${type} == "Darwin" ]; then
         install_vimplus_on_mac
     elif [ ${type} == "FreeBSD" ]; then
