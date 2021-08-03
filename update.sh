@@ -138,7 +138,6 @@ function main()
 
     type=$(uname)
     echo "Platform type: "${type}
-    curl -sL install-node.now.sh/lts | bash # coc.nvim需要
 
     if [ ${type} == "Darwin" ]; then
         update_vimplus_on_mac
