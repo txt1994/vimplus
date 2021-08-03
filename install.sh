@@ -376,8 +376,7 @@ function install_fonts_on_linux()
 function install_vim_plugin()
 {
     vim -c "PlugInstall" -c "q" -c "q"
-    vim -c "CocInstall coc-json coc-vimlsp coc-tsserver coc-CSS coc-snippets coc-clang-format-style-options coc-sql" -c "q" -c "q"
-    
+    vim -c "CocInstall coc-json coc-vimlsp coc-tsserver coc-css coc-snippets coc-clang-format-style-options coc-sql" -c "q" -c "q"
 }
 
 # 打印logo
