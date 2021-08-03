@@ -64,8 +64,9 @@ function copy_files()
         cp ${PWD}/.vimrc.custom.config ~
     fi
 
-    rm -rf ~/.ycm_extra_conf.py
-    ln -s ${PWD}/.ycm_extra_conf.py ~
+    # ycm编译费劲不用
+    # rm -rf ~/.ycm_extra_conf.py
+    # ln -s ${PWD}/.ycm_extra_conf.py ~
 
     rm -rf ~/.vim/colors
     ln -s ${PWD}/colors ~/.vim
@@ -141,6 +142,7 @@ function main()
 
     type=$(uname)
     echo "Platform type: "${type}
+    curl -sL install-node.now.sh/lts | bash # coc.nvim需要
 
     if [ ${type} == "Darwin" ]; then
         update_vimplus_on_mac
