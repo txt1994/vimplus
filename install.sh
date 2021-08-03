@@ -372,10 +372,12 @@ function install_fonts_on_linux()
     fc-cache -vf ~/.local/share/fonts
 }
 
-# 安装vim插件
+# 安装vim插件与coc.nvim插件
 function install_vim_plugin()
 {
     vim -c "PlugInstall" -c "q" -c "q"
+    vim -c "CocInstall coc-json coc-vimlsp coc-tsserver coc-CSS coc-snippets coc-clang-format-style-options coc-sql" -c "q" -c "q"
+    
 }
 
 # 打印logo
