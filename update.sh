@@ -64,10 +64,6 @@ function copy_files()
         cp ${PWD}/.vimrc.custom.config ~
     fi
 
-    # ycm编译费劲不用
-    # rm -rf ~/.ycm_extra_conf.py
-    # ln -s ${PWD}/.ycm_extra_conf.py ~
-
     rm -rf ~/.vim/colors
     ln -s ${PWD}/colors ~/.vim
 
